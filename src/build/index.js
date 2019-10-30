@@ -17,7 +17,8 @@ limitations under the License.
 const buildSVGs = require('./buildSVGs');
 const buildTool = require('./buildTool');
 const cleanDist = require('./cleanDist');
+const createGitHubComment = require('./createGitHubComment');
 const ensureDir = require('./ensureDir');
 const fetchTemplate = require('./fetchTemplate');
 
-module.exports = { buildSVGs, buildTool, cleanDist, ensureDir, fetchTemplate };
+module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate };

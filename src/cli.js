@@ -35,6 +35,11 @@ switch (args[0]) {
         build.cleanDist();
         break;
 
+    case 'comment':
+        if (args.length >= 2) build.createGitHubComment(args.slice(1));
+        else console.log('Missing tool(s) map for comment');
+        break;
+
     case 'template':
         build.fetchTemplate();
         break;
@@ -44,5 +49,6 @@ switch (args[0]) {
         console.log('  svgs <source dir>');
         console.log('  tool <source dir> <output dir>');
         console.log('  clean');
+        console.log('  comment <... name:dist/dir>');
         console.log('  template');
 }
