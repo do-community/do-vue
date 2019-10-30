@@ -14,10 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const buildSVGs = require('./buildSVGs');
-const buildTool = require('./buildTool');
-const cleanDist = require('./cleanDist');
+const fs = require('fs');
 const ensureDir = require('./ensureDir');
-const fetchTemplate = require('./fetchTemplate');
 
-module.exports = { buildSVGs, buildTool, cleanDist, ensureDir, fetchTemplate };
+module.exports = () => {
+    console.log('Cleaning out dist directory...');
+
+    // Create target directory
+    const base = `${process.cwd()}/dist`;
+    ensureDir(base);
+
+    // Remove all existing files
+    fs.rmdirSync(base, { recursive: true });
+
+    console.log('...dist directory cleaned for build.');
+};

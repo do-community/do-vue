@@ -26,6 +26,15 @@ switch (args[0]) {
         else console.log('Missing source dir for SVGs');
         break;
 
+    case 'tool':
+        if (args.length >= 3) build.buildTool(args[1], args[2]);
+        else console.log('Missing source/output dirs for tool');
+        break;
+
+    case 'clean':
+        build.cleanDist();
+        break;
+
     case 'template':
         build.fetchTemplate();
         break;
@@ -33,5 +42,7 @@ switch (args[0]) {
     default:
         console.log('Usage:');
         console.log('  svgs <source dir>');
+        console.log('  tool <source dir> <output dir>');
+        console.log('  clean');
         console.log('  template');
 }
