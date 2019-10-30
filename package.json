@@ -2,9 +2,12 @@
   "name": "do-vue",
   "version": "1.0.0",
   "description": "Custom Vue templates & resources for DigitalOcean Community tools.",
-  "main": "src",
+  "main": "src/cli.js",
   "scripts": {
     "test": "eslint './src/**/*.{vue,js}'"
+  },
+  "bin": {
+    "do-vue": "src/cli.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +19,10 @@
     "url": "https://github.com/do-community/do-vue/issues"
   },
   "homepage": "https://github.com/do-community/do-vue#readme",
-  "dependencies": {},
+  "dependencies": {
+    "jsdom": "^15.2.0",
+    "node-fetch": "^2.6.0"
+  },
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-plugin-vue": "^5.2.3"
