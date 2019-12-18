@@ -59,6 +59,12 @@ module.exports = async () => {
             node.setAttribute('src', `https://www.digitalocean.com${src}`);
         }
     });
+    document.querySelectorAll('[content]').forEach(node => {
+        const content = node.getAttribute('content');
+        if (content.startsWith('/')) {
+            node.setAttribute('content', `https://www.digitalocean.com${content}`);
+        }
+    });
 
     // Inject charset
     const charset = document.createElement('meta');
