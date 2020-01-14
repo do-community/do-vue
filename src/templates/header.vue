@@ -16,7 +16,7 @@ limitations under the License.
 
 <template>
     <div class="header">
-        <div class="container">
+        <div class="container" :style="noLeftMargin ? {marginLeft: 0} : {}">
             <div>
                 <h1><a :href="baseUrl">{{ this.$props.title }}</a></h1>
                 <h3><slot name="description"></slot></h3>
@@ -42,6 +42,10 @@ limitations under the License.
         name: 'Header',
         props: {
             title: String,
+            noLeftMargin: {
+                type: Boolean,
+                default: () => false,
+            },
         },
         data() {
             return {
