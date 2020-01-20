@@ -24,8 +24,23 @@ module.exports = async () => {
     console.log('Fetching Community Tools template from www.digitalocean.com...');
 
     // Fetch raw template
-    const res = await fetch('https://www.digitalocean.com/community/tools?render_as_empty=1');
-    let rawHTML = await res.text();
+    let rawHTML;
+    if (process.env.BLANK_TEMPLATE === 'true') {
+        rawHTML = `<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Blank Template</title>
+    </head>
+    <body>
+        <div class="wrapper layout-wrapper">
+        </div>
+    </body>
+</html>
+`;
+    } else {
+        const res = await fetch('https://www.digitalocean.com/community/tools?render_as_empty=1');
+        rawHTML = await res.text();
+    }
 
     // Parse
     const dom = new JSDOM(rawHTML);
