@@ -47,19 +47,21 @@ module.exports = async () => {
     const { document } = dom.window;
     const nav = document.querySelector('nav.do_nav');
 
-    // Nuke top log in button
-    nav.querySelectorAll('ul.utility li[role="menuitem"]').forEach(node => {
-        if (node.innerHTML.includes('<header>Log in to</header>')) {
-            node.remove();
-        }
-    });
+    if (nav) {
+        // Nuke top log in button
+        nav.querySelectorAll('ul.utility li[role="menuitem"]').forEach(node => {
+            if (node.innerHTML.includes('<header>Log in to</header>')) {
+                node.remove();
+            }
+        });
 
-    // Nuke the primary log in button
-    nav.querySelectorAll('ul.primary li[role="menuitem"]').forEach(node => {
-        if (node.innerHTML.includes('Sign Up</a>')) {
-            node.remove();
-        }
-    });
+        // Nuke the primary log in button
+        nav.querySelectorAll('ul.primary li[role="menuitem"]').forEach(node => {
+            if (node.innerHTML.includes('Sign Up</a>')) {
+                node.remove();
+            }
+        });
+    }
 
     // Deal with hard URLs
     document.querySelectorAll('[href]').forEach(node => {
