@@ -81,8 +81,8 @@ module.exports = async () => {
     rawHTML = rawHTML.replace('</head>', '<block name="head"></block></head>');
 
     // Inject content block
-    rawHTML = rawHTML.replace(/<div class=['"]wrapper layout-wrapper['"]>\s+?<div class=['"]clearfix['"]><\/div>\s+?<\/div>/,
-        '<div class="wrapper layout-wrapper"><block name="content"></block><div class="clearfix"></div></div>');
+    rawHTML = rawHTML.replace(/<div class=['"]wrapper layout-wrapper['"]>/,
+        '<div class="wrapper layout-wrapper"><block name="content"></block>');
 
     // Inject last fetch comment
     rawHTML = rawHTML.replace('<head>', `<!-- Last fetch from www.digitalocean.com @ ${(new Date()).toISOString()} -->\n<head>`);
