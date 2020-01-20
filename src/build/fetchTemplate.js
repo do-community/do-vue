@@ -24,27 +24,44 @@ module.exports = async () => {
     console.log('Fetching Community Tools template from www.digitalocean.com...');
 
     // Fetch raw template
-    const res = await fetch('https://www.digitalocean.com/community/tools?render_as_empty=1');
-    let rawHTML = await res.text();
+    let rawHTML;
+    if (process.env.BLANK_TEMPLATE === 'true') {
+        rawHTML = `<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Blank Template</title>
+    </head>
+    <body>
+        <div class="wrapper layout-wrapper">
+        </div>
+    </body>
+</html>
+`;
+    } else {
+        const res = await fetch('https://www.digitalocean.com/community/tools?render_as_empty=1');
+        rawHTML = await res.text();
+    }
 
     // Parse
     const dom = new JSDOM(rawHTML);
     const { document } = dom.window;
     const nav = document.querySelector('nav.do_nav');
 
-    // Nuke top log in button
-    nav.querySelectorAll('ul.utility li[role="menuitem"]').forEach(node => {
-        if (node.innerHTML.includes('<header>Log in to</header>')) {
-            node.remove();
-        }
-    });
+    if (nav) {
+        // Nuke top log in button
+        nav.querySelectorAll('ul.utility li[role="menuitem"]').forEach(node => {
+            if (node.innerHTML.includes('<header>Log in to</header>')) {
+                node.remove();
+            }
+        });
 
-    // Nuke the primary log in button
-    nav.querySelectorAll('ul.primary li[role="menuitem"]').forEach(node => {
-        if (node.innerHTML.includes('Sign Up</a>')) {
-            node.remove();
-        }
-    });
+        // Nuke the primary log in button
+        nav.querySelectorAll('ul.primary li[role="menuitem"]').forEach(node => {
+            if (node.innerHTML.includes('Sign Up</a>')) {
+                node.remove();
+            }
+        });
+    }
 
     // Deal with hard URLs
     document.querySelectorAll('[href]').forEach(node => {
