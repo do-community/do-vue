@@ -38,7 +38,7 @@ module.exports = async () => {
 </html>
 `;
     } else {
-        const res = await fetch('https://www.digitalocean.com/community/tools?render_as_empty=1');
+        const res = await fetch('https://www.digitalocean.com/community/tools/blank');
         rawHTML = await res.text();
     }
 
