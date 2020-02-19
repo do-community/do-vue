@@ -1,5 +1,5 @@
 /*
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,7 +25,9 @@ module.exports = async () => {
 
     // Fetch raw template
     let rawHTML;
+
     if (process.env.BLANK_TEMPLATE === 'true') {
+        // Support a blank template for completely local dev
         rawHTML = `<!DOCTYPE HTML>
 <html lang="en">
     <head>
@@ -37,7 +39,12 @@ module.exports = async () => {
     </body>
 </html>
 `;
+    } else if (process.env.WWW_TEMPLATE === 'true') {
+        // Support developing a tool for WWW
+        const res = await fetch('https://www.digitalocean.com/pricing/calculator');
+        rawHTML = await res.text();
     } else {
+        // Default to a tool for Community tooling
         const res = await fetch('https://www.digitalocean.com/community/tools/blank');
         rawHTML = await res.text();
     }
@@ -84,9 +91,21 @@ module.exports = async () => {
     });
 
     // Inject charset
-    const charset = document.createElement('meta');
-    charset.setAttribute('charset', 'utf8');
-    document.head.insertBefore(charset, document.head.firstChild);
+    if (!document.querySelectorAll('meta[charset="utf-8"]') && !document.querySelectorAll('meta[charset="utf8"]')) {
+        const charset = document.createElement('meta');
+        charset.setAttribute('charset', 'utf-8');
+        document.head.insertBefore(charset, document.head.firstChild);
+    }
+
+    // Inject content block (for WWW)
+    const main = document.querySelector('main.SiteFrame-body');
+    if (main) main.innerHTML = '<section class="www-Section www-Section--insetSquish">' +
+        '<block name="content"></block></section>';
+
+    // Remove some WWW content we don't need
+    document.documentElement.className = '';
+    const pricingScript = document.querySelector('script[src*="pricing-calculator"]');
+    if (pricingScript) pricingScript.remove();
 
     // Convert back to raw
     rawHTML = dom.serialize();
@@ -97,7 +116,7 @@ module.exports = async () => {
     // Inject head block
     rawHTML = rawHTML.replace('</head>', '<block name="head"></block></head>');
 
-    // Inject content block
+    // Inject content block (for Community)
     rawHTML = rawHTML.replace(/<div class=['"]wrapper layout-wrapper['"]>/,
         '<div class="wrapper layout-wrapper"><block name="content"></block>');
 
