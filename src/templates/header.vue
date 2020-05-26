@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,8 +36,6 @@ limitations under the License.
 </template>
 
 <script>
-    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-
     export default {
         name: 'Header',
         props: {
@@ -45,7 +43,7 @@ limitations under the License.
         },
         data() {
             return {
-                baseUrl,
+                baseUrl: `${window.location.protocol}//${window.location.host}${window.location.pathname}`,
             };
         },
         methods: {
