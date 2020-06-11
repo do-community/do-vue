@@ -89,6 +89,9 @@ module.exports = async () => {
             node.setAttribute('content', `https://www.digitalocean.com${content}`);
         }
     });
+    document.querySelectorAll('style').forEach(node => {
+        node.innerHTML = node.innerHTML.replace(/url\((["'])?\//g, 'url($1https://www.digitalocean.com/');
+    });
 
     // Inject charset
     if (!document.querySelectorAll('meta[charset="utf-8"]') && !document.querySelectorAll('meta[charset="utf8"]')) {
@@ -98,20 +101,15 @@ module.exports = async () => {
     }
 
     // Inject content block (for WWW)
-    const main = document.querySelector('main.SiteFrame-body');
+    const main = document.querySelector('.container.container-main');
     if (main) main.innerHTML = '<section class="www-Section www-Section--insetSquish">' +
         '<block name="content"></block></section>';
-
-    // Remove some WWW content we don't need
-    document.documentElement.className = '';
-    const pricingScript = document.querySelector('script[src*="pricing-calculator"]');
-    if (pricingScript) pricingScript.remove();
 
     // Convert back to raw
     rawHTML = dom.serialize();
 
     // Inject title block
-    rawHTML = rawHTML.replace(/<title>(.+?)<\/title>/, '<title><block name="title"></block>DigitalOcean</title>');
+    rawHTML = rawHTML.replace(/<title(.*?)>(.+?)<\/title>/, '<title$1><block name="title"></block>DigitalOcean</title>');
 
     // Inject head block
     rawHTML = rawHTML.replace('</head>', '<block name="head"></block></head>');
