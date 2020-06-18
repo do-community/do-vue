@@ -33,6 +33,7 @@ const build = async (asset, out) => {
         cache: false,
         contentHash: false,
         minify: true,
+        scopeHoist: process.argv.includes('--scope-hoisting'),
         logLevel: 2,
         sourceMaps: false,
         detailedReport: false,
