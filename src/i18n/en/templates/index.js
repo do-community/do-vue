@@ -1,5 +1,5 @@
 /*
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const footer = require('./footer');
-const landing = require('./landing');
+import footer from './footer';
+import landing from './landing';
 
-module.exports = { footer, landing };
+export default { footer, landing };
