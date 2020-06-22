@@ -50,6 +50,7 @@ const build = async (asset, out, minify = true) => {
 const terser = (file, out) => {
     console.log(`\nLoading in ${file} & minifying...`);
 
+    // Minify
     const contents = fs.readFileSync(file, 'utf8');
     const minified = Terser.minify(contents, {
         toplevel: true,
@@ -57,6 +58,11 @@ const terser = (file, out) => {
             passes: 5,
         },
     });
+
+    // Errors
+    if (minified.error) throw minified.error;
+
+    // Save it
     fs.writeFileSync(out, minified.code, 'utf8');
 
     console.log(`...minified successfully, saved to ${out}`);
