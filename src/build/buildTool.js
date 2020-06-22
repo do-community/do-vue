@@ -1,5 +1,5 @@
 /*
-Copyright 2019 DigitalOcean
+Copyright 2020 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ const Bundler = require('parcel-bundler');
 const path = require('path');
 const posthtml = require('posthtml');
 const fs = require('fs');
+const Terser = require('terser');
 const ensureDir = require('./ensureDir');
 
-const build = async (asset, out) => {
+const build = async (asset, out, minify = true) => {
     console.log(`\nLoading in ${asset} & building...`);
 
     // Define options
@@ -32,7 +33,7 @@ const build = async (asset, out) => {
         watch: false,
         cache: false,
         contentHash: false,
-        minify: true,
+        minify,
         scopeHoist: process.argv.includes('--scope-hoisting'),
         logLevel: 2,
         sourceMaps: false,
@@ -44,6 +45,21 @@ const build = async (asset, out) => {
     await bundler.bundle();
 
     console.log(`...build successfully, saved to ${out}`);
+};
+
+const terser = (file, out) => {
+    console.log(`\nLoading in ${file} & minifying...`);
+
+    const contents = fs.readFileSync(file, 'utf8');
+    const minified = Terser.minify(contents, {
+        toplevel: true,
+        compress: {
+            passes: 5,
+        },
+    });
+    fs.writeFileSync(out, minified.code, 'utf8');
+
+    console.log(`...minified successfully, saved to ${out}`);
 };
 
 const index = async (file, out) => {
@@ -83,7 +99,9 @@ module.exports = async (source, out) => {
     await build(
         path.join(source, 'mount.js'),
         path.join(out, 'mount.js'),
+        !process.argv.includes('--terser'),
     );
+    if (process.argv.includes('--terser')) terser(path.join(out, 'mount.js'), path.join(out, 'mount.js'));
 
     // Build the CSS
     await build(
