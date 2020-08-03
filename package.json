@@ -26,10 +26,10 @@
     "posthtml": "^0.13.1",
     "posthtml-extend": "^0.3.0",
     "sass": "^1.26.10",
-    "terser": "^4.8.0"
+    "terser": "^5.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
+    "eslint": "^7.6.0",
     "eslint-plugin-vue": "^6.2.2"
   }
 }
