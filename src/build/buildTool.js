@@ -47,20 +47,16 @@ const build = async (asset, out, minify = true) => {
     console.log(`...build successfully, saved to ${out}`);
 };
 
-const terser = (file, out) => {
+const terser = async (file, out) => {
     console.log(`\nLoading in ${file} & minifying...`);
 
     // Minify
     const contents = fs.readFileSync(file, 'utf8');
-    const minified = Terser.minify(contents, {
-        toplevel: true,
+    const minified = await Terser.minify(contents, {
         compress: {
             passes: 5,
         },
     });
-
-    // Errors
-    if (minified.error) throw minified.error;
 
     // Save it
     fs.writeFileSync(out, minified.code, 'utf8');
@@ -107,7 +103,7 @@ module.exports = async (source, out) => {
         path.join(out, 'mount.js'),
         !process.argv.includes('--terser'),
     );
-    if (process.argv.includes('--terser')) terser(path.join(out, 'mount.js'), path.join(out, 'mount.js'));
+    if (process.argv.includes('--terser')) await terser(path.join(out, 'mount.js'), path.join(out, 'mount.js'));
 
     // Build the CSS
     await build(
