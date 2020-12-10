@@ -109,7 +109,7 @@ module.exports = async () => {
     rawHTML = dom.serialize();
 
     // Inject title block
-    rawHTML = rawHTML.replace(/<title(.*?)>(.+?)<\/title>/, '<title$1><block name="title"></block>DigitalOcean</title>');
+    rawHTML = rawHTML.replace(/<title(.*?)>(.+?)<\/title>/, '<block name="title"><title>DigitalOcean</title></block>');
 
     // Inject head block
     rawHTML = rawHTML.replace('</head>', '<block name="head"></block></head>');
