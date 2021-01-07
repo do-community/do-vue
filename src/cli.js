@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /*
-Copyright 2019 DigitalOcean
+Copyright 2021 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,6 +15,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+process.on('unhandledRejection', (error, promise) => {
+    console.log('Unhandled rejection at:', promise);
+    console.error(error);
+    process.exit(1);
+});
 
 const build = require('./build');
 
