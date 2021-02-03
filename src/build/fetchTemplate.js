@@ -1,5 +1,5 @@
 /*
-Copyright 2020 DigitalOcean
+Copyright 2021 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -117,6 +117,9 @@ module.exports = async () => {
     // Inject content block (for Community)
     rawHTML = rawHTML.replace(/<div class=['"]wrapper layout-wrapper['"]>/,
         '<div class="wrapper layout-wrapper"><block name="content"></block>');
+
+    // Inject script block
+    rawHTML = rawHTML.replace('</body>', '<block name="script"></block></body>');
 
     // Inject last fetch comment
     rawHTML = rawHTML.replace('<head>', `<!-- Last fetch from www.digitalocean.com @ ${(new Date()).toISOString()} -->\n<head>`);
