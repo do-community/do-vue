@@ -93,6 +93,6 @@ module.exports = (source, dest) => ({
         }),
         new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin({filename: "style.css"}),
+        new MiniCssExtractPlugin({filename: 'style.css'}),
     ],
 });
