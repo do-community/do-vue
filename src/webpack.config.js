@@ -100,7 +100,8 @@ module.exports = (source, dest) => ({
                 try {
                     await fs.unlink(path.join(dest, '__index_tmp.js'));
                 } catch (_) {
-                    // Ignore deletion errors.
+                    // Exit on deletion errors. This is the build step that involves the temp JS file.
+                    return;
                 }
                 for (const fname of await fs.readdir(dest)) {
                     if (fname.endsWith('.html')) {
