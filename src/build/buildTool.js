@@ -16,15 +16,11 @@ limitations under the License.
 
 const webpack = require('webpack');
 const config = require('../webpack.config');
-const path = require('path');
 const ensureDir = require('./ensureDir');
 
-const build = async (source, out, filename) => {
+const build = async (source, out) => {
     config.mode = 'production';
-    config.entry = path.join(process.cwd(), path.normalize(source));
-    config.output.path = path.join(process.cwd(), path.normalize(out));
-    config.output.filename = filename;
-    return new Promise((res, rej) => webpack(config, (err, stats) => {
+    return new Promise((res, rej) => webpack(config(source, out), (err, stats) => {
         if (err || stats.hasErrors()) {
             console.error(err ? err.message : stats.toString());
             rej(err);
@@ -44,6 +40,5 @@ module.exports = async (source, out) => {
     await build(
         source,
         out,
-        'index.html',
     );
 };
