@@ -57,12 +57,17 @@ module.exports = (source, dest) => ({
             },
             {
                 test: /\.html$/,
-                loader: 'posthtml-loader',
-                options: {
-                    config: { 
-                        path: process.cwd(),
+                use: [
+                    'file-loader',
+                    {
+                        loader: 'posthtml-loader',
+                        options: {
+                            config: { 
+                                path: process.cwd(),
+                            },
+                        },
                     },
-                },
+                ],
             },
         ],
     },
