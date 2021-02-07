@@ -7,7 +7,7 @@ module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
         'mount.js': path.join(source, 'mount.js'),
-        'index.html': path.join(source, 'index.html'),
+        '__index_tmp.js': path.join(source, 'index.html'),
     },
     output: {
         path: dest,

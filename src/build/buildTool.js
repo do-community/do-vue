@@ -18,6 +18,7 @@ const webpack = require('webpack');
 const config = require('../webpack.config');
 const path = require('path');
 const ensureDir = require('./ensureDir');
+const fs = require('fs').promises;
 
 const build = async (source, out) => {
     config.mode = 'production';
@@ -34,6 +35,17 @@ const build = async (source, out) => {
     }));
 };
 
+const unhackHtml = async out => {
+    await fs.unlink(path.join(out, '__index_tmp.js'));
+    for (const fname of await fs.readdir(out)) {
+        if (fname.endsWith('.html')) {
+            await fs.rename(path.join(out, fname), path.join(out, 'index.html'));
+            return;
+        }
+    }
+    throw new Error('no HTML found');
+};
+
 module.exports = async (source, out) => {
     // Create target directory
     ensureDir(out);
@@ -43,4 +55,7 @@ module.exports = async (source, out) => {
         source,
         out,
     );
+
+    // Unhack the HTML.
+    await unhackHtml(out);
 };
