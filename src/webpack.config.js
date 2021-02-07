@@ -8,8 +8,8 @@ module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
         mount: [
-            path.join(source, 'mount.js'),
             path.join(source, 'index.html'),
+            path.join(source, 'mount.js'),
         ],
     },
     output: {
