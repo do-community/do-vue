@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const process = require('process');
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (source, dest) => ({
     devtool: 'source-map',
@@ -81,6 +82,7 @@ module.exports = (source, dest) => ({
         new webpack.ProvidePlugin({
             process: 'process/browser',
         }),
+        new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
     ],
 });
