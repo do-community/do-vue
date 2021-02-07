@@ -6,13 +6,13 @@ const path = require('path');
 module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
-        mount: path.join(source, 'mount.js'),
-        html: path.join(source, 'index.html'),
+        'mount.js': path.join(source, 'mount.js'),
+        'index.html': path.join(source, 'index.html'),
     },
     output: {
         path: dest,
         publicPath: './',
-        filename: '[base]',
+        filename: '[name]',
     },
     module: {
         rules: [
@@ -57,17 +57,12 @@ module.exports = (source, dest) => ({
             },
             {
                 test: /\.html$/,
-                use: [
-                    'file-loader',
-                    {
-                        loader: 'posthtml-loader',
-                        options: {
-                            config: { 
-                                path: process.cwd(),
-                            },
-                        },
+                loader: 'posthtml-loader',
+                options: {
+                    config: { 
+                        path: process.cwd(),
                     },
-                ],
+                },
             },
         ],
     },
