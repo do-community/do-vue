@@ -1,21 +1,18 @@
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-//const HtmlWebpackPlugin = require('html-webpack-plugin');
 const process = require('process');
 const path = require('path');
 
 module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
-        mount: [
-            path.join(source, 'index.html'),
-            path.join(source, 'mount.js'),
-        ],
+        mount: path.join(source, 'mount.js'),
+        html: path.join(source, 'index.html'),
     },
     output: {
         path: dest,
         publicPath: './',
-        filename: 'mount.js',
+        filename: '[base]',
     },
     module: {
         rules: [
