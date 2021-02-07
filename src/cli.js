@@ -38,7 +38,7 @@ switch (args[0]) {
         break;
 
     case 'dev':
-        if (args.length >= 3) build.dev(args[1], args[2], args[3]);
+        if (args.length >= 4) build.dev(args[1], args[2], args[3]);
         else console.log('Missing source/output dirs and port for dev');
         break;
 
