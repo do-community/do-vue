@@ -21,9 +21,9 @@ const ensureDir = require('./ensureDir');
 const fs = require('fs').promises;
 
 const build = async (source, out) => {
+    const abs = x => path.join(process.cwd(), path.normalize(x));
     const config = configGenerator(abs(source), abs(out));
     config.mode = 'production';
-    const abs = x => path.join(process.cwd(), path.normalize(x));
     return new Promise((res, rej) => webpack(config, (err, stats) => {
         if (err || stats.hasErrors()) {
             console.error(err ? err.message : stats.toString());
