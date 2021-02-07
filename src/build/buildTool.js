@@ -20,6 +20,7 @@ const path = require('path');
 const ensureDir = require('./ensureDir');
 
 const build = async (source, out, filename) => {
+    config.mode = 'production';
     config.entry = path.join(process.cwd(), path.normalize(source));
     config.output.path = path.join(process.cwd(), path.normalize(out));
     config.output.filename = filename;
