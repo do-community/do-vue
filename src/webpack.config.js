@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const process = require('process');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (source, dest) => ({
     devtool: 'source-map',
@@ -15,6 +16,13 @@ module.exports = (source, dest) => ({
         publicPath: './',
         filename: '[name]',
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            '...',
+            new CssMinimizerPlugin(),
+        ],
+     },
     module: {
         rules: [
             {

@@ -23,6 +23,7 @@
   "dependencies": {
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.1",
+    "css-minimizer-webpack-plugin": "^1.2.0",
     "file-loader": "6.2.0",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
