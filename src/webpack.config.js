@@ -22,7 +22,7 @@ module.exports = (source, dest) => ({
             '...',
             new CssMinimizerPlugin(),
         ],
-     },
+    },
     module: {
         rules: [
             {
