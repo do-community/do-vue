@@ -22,4 +22,4 @@ const ensureDir = dir => require('./ensureDir')(dir);
 const fetchTemplate = () => require('./fetchTemplate')();
 const dev = (source, out, port) => require('./dev')(source, out, port);
 
-module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate };
+module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate, dev };
