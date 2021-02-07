@@ -37,6 +37,11 @@ switch (args[0]) {
         else console.log('Missing source/output dirs for tool');
         break;
 
+    case 'dev':
+        if (args.length >= 3) build.dev(args[1], args[2], args[3]);
+        else console.log('Missing source/output dirs and port for dev');
+        break;
+
     case 'clean':
         build.cleanDist();
         break;
@@ -54,6 +59,7 @@ switch (args[0]) {
         console.log('Usage:');
         console.log('  svgs <source dir>');
         console.log('  tool <source dir> <output dir>');
+        console.log('  dev <source dir> <output dir> <port>');
         console.log('  clean');
         console.log('  comment <... name:dist/dir>');
         console.log('  template');

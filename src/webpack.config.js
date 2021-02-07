@@ -94,5 +94,17 @@ module.exports = (source, dest) => ({
         new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),
+        {
+            apply: compiler => compiler.hooks.afterEmit.tapPromise('HTMLPatchingPlugin', async () => {
+                await fs.unlink(path.join(dest, '__index_tmp.js'));
+                for (const fname of await fs.readdir(dest)) {
+                    if (fname.endsWith('.html')) {
+                        await fs.rename(path.join(dest, fname), path.join(dest, 'index.html'));
+                        return;
+                    }
+                }
+                throw new Error('no HTML found');
+            }),
+        },
     ],
 });
