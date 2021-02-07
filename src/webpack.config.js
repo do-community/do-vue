@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const process = require('process');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (source, dest) => ({
@@ -54,11 +55,11 @@ module.exports = (source, dest) => ({
             },
             {
                 test: /\.s[ac]ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader'],
             },
             {
                 test: /\.vue$/,
@@ -92,5 +93,6 @@ module.exports = (source, dest) => ({
         }),
         new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({filename: "style.css"}),
     ],
 });
