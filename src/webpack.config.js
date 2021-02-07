@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+//const HtmlWebpackPlugin = require('html-webpack-plugin');
 const process = require('process');
 const path = require('path');
 
@@ -83,10 +83,6 @@ module.exports = (source, dest) => ({
     plugins: [
         new webpack.ProvidePlugin({
             process: 'process/browser',
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: path.join(source, 'index.html'),
         }),
         new VueLoaderPlugin(),
     ],
