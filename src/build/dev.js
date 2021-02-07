@@ -30,7 +30,7 @@ module.exports = (source, out, port) => {
     const config = configGenerator(abs(source), out);
     config.mode = 'development';
     const devServer = new WebpackDevServer(webpack(config), {
-        contentBase: out, open: true,
+        contentBase: out, open: true, writeToDisk: true,
     });
 
     // Start the dev server.
