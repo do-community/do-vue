@@ -97,7 +97,11 @@ module.exports = (source, dest) => ({
         new MiniCssExtractPlugin({filename: 'style.css'}),
         {
             apply: compiler => compiler.hooks.afterEmit.tapPromise('HTMLPatchingPlugin', async () => {
-                await fs.unlink(path.join(dest, '__index_tmp.js'));
+                try {
+                    await fs.unlink(path.join(dest, '__index_tmp.js'));
+                } catch (_) {
+                    // Ignore deletion errors.
+                }
                 for (const fname of await fs.readdir(dest)) {
                     if (fname.endsWith('.html')) {
                         await fs.rename(path.join(dest, fname), path.join(dest, 'index.html'));
