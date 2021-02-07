@@ -42,6 +42,6 @@ module.exports = async (source, out) => {
     await build(
         source,
         out,
-        'mount.js',
+        'index.html',
     );
 };

@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const buildSVGs = () => require('./buildSVGs');
-const buildTool = () => require('./buildTool');
-const cleanDist = () => require('./cleanDist');
-const createGitHubComment = () => require('./createGitHubComment');
-const ensureDir = () => require('./ensureDir');
-const fetchTemplate = () => require('./fetchTemplate');
+const buildSVGs = x => require('./buildSVGs')(x);
+const buildTool = x => require('./buildTool')(x);
+const cleanDist = x => require('./cleanDist')(x);
+const createGitHubComment = x => require('./createGitHubComment')(x);
+const ensureDir = x => require('./ensureDir')(x);
+const fetchTemplate = x => require('./fetchTemplate')(x);
 
 module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate };
