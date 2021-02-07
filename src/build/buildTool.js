@@ -25,7 +25,7 @@ const build = async (source, out, filename) => {
     config.output.filename = filename;
     return new Promise((res, rej) => webpack(config, (err, stats) => {
         if (err || stats.hasErrors()) {
-            console.error(stats.toString());
+            console.error(err ? err.message : stats.toString());
             rej(err);
         }
         console.log(stats.toString());
