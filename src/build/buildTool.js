@@ -27,6 +27,7 @@ const build = async (source, out, filename) => {
         if (err || stats.hasErrors()) {
             console.error(err ? err.message : stats.toString());
             rej(err);
+            return;
         }
         console.log(stats.toString());
         console.log(`...build successfully, saved to ${out}`);
