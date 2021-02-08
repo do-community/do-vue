@@ -86,12 +86,15 @@ module.exports = (source, dest) => ({
         fallback: {
             path: require.resolve('path-browserify'),
             fs: require.resolve('browserify-fs'),
+            buffer: require.resolve('buffer/'),
+            util: require.resolve('util/'),
+            stream: require.resolve('stream-browserify'),
         },
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
     },
     plugins: [
         new webpack.ProvidePlugin({
-            process: 'process/browser',
+            process: 'process/browser.js',
         }),
         new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
