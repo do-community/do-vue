@@ -28,6 +28,10 @@ module.exports = (source, dest) => ({
     module: {
         rules: [
             {
+                test: /\.json$/,
+                use: 'json-loader',
+            },
+            {
                 test: /\.svg$/,
                 exclude: /node_modules/,
                 use: [
@@ -86,7 +90,7 @@ module.exports = (source, dest) => ({
         fallback: {
             path: require.resolve('path-browserify'),
         },
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
     },
     plugins: [
         new webpack.ProvidePlugin({
