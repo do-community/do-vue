@@ -22,6 +22,7 @@
   "homepage": "https://github.com/do-community/do-vue#readme",
   "dependencies": {
     "babel-loader": "^8.2.2",
+    "browserify-fs": "^1.0.0",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
     "file-loader": "6.2.0",

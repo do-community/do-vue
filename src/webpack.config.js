@@ -85,6 +85,7 @@ module.exports = (source, dest) => ({
     resolve: {
         fallback: {
             path: require.resolve('path-browserify'),
+            fs: require.resolve('browserify-fs'),
         },
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
     },
