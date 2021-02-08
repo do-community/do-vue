@@ -30,6 +30,7 @@ module.exports = (source, dest) => ({
             {
                 test: /\.json$/,
                 use: 'json-loader',
+                exclude: /node_modules/,
             },
             {
                 test: /\.svg$/,
