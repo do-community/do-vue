@@ -28,11 +28,6 @@ module.exports = (source, dest) => ({
     module: {
         rules: [
             {
-                test: /\.json$/,
-                use: 'json-loader',
-                exclude: /node_modules/,
-            },
-            {
                 test: /\.svg$/,
                 exclude: /node_modules/,
                 use: [
