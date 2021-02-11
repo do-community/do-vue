@@ -97,6 +97,7 @@ module.exports = (source, dest) => ({
     plugins: [
         new webpack.ProvidePlugin({
             process: 'process/browser.js',
+            Buffer: ['buffer', 'Buffer'],
         }),
         new BundleAnalyzerPlugin({analyzerMode: 'static'}),
         new VueLoaderPlugin(),
