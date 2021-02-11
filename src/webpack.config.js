@@ -89,6 +89,7 @@ module.exports = (source, dest) => ({
             buffer: require.resolve('buffer/'),
             util: require.resolve('util/'),
             stream: require.resolve('stream-browserify'),
+            events: require.resolve('events/'),
         },
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
     },
