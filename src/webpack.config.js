@@ -67,6 +67,10 @@ module.exports = (source, dest) => ({
                 loader: 'vue-loader',
             },
             {
+                test: /\.ya?ml$/,
+                use: 'yaml-loader',
+            },
+            {
                 test: /\.html$/,
                 use: [
                     'file-loader',
@@ -92,7 +96,7 @@ module.exports = (source, dest) => ({
             events: require.resolve('events/'),
             constants: require.resolve('constants-browserify'),
         },
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue'],
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
     plugins: [
         new webpack.ProvidePlugin({

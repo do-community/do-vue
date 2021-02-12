@@ -48,7 +48,8 @@
     "vue-loader": "^15.9.6",
     "webpack": "^5.21.1",
     "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "yaml-loader": "^0.6.0"
   },
   "devDependencies": {
     "eslint": "^7.15.0",
