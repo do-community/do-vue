@@ -69,6 +69,7 @@ module.exports = (source, dest) => ({
             {
                 test: /\.ya?ml$/,
                 use: 'yaml-loader',
+                type: 'json',
             },
             {
                 test: /\.html$/,
