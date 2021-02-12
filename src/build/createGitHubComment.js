@@ -18,7 +18,10 @@ const fetch = require('node-fetch');
 
 module.exports = async args => {
     const baseURL = `https://${process.env.SPACES_BUCKET}.${process.env.SPACES_REGION}.digitaloceanspaces.com`;
-    const tools = args.map(data => `[${data}](${baseURL}/commits/${data}/${process.env.COMMIT_SHA}/index.html)`);
+    const tools = args.map(data => {
+        const fp = `${baseURL}/commits/${data}/${process.env.COMMIT_SHA}`;
+        return `[${data}](${fp}/index.html) ([Build Analysis Report](${fp}/report.html))`;
+    });
 
     const comment = `This commit has been deployed to DigitalOcean Spaces for easy reviewing.
 
