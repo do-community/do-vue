@@ -40,22 +40,27 @@ module.exports = (source, out, port) => {
                 'Content-Type': 'application/json',
                 'Content-Length': j.length,
             });
-            res.write(j);
+            res.end(j);
             break;
-        case '/', '/index.html':
+        case '/':
+        case '/index.html':
             // Defines the injection script.
             const refreshInjection = `<script>
                 // Defines when the page was refreshed.
                 const refreshed = ${lastUpdated};
 
-                // Every second, go ahead and check if we should refresh.
-                setInterval(() => {
+                // Every 10 seconds, go ahead and check if we should refresh.
+                let x;
+                x = setInterval(() => {
                     // Run a fetch request.
                     fetch('/do-vue-dev/_lastUpdated').then(res => res.json()).then(res => {
                         // If they are different, we should refresh.
-                        if (res !== refreshed) window.location.reload();
+                        if (res !== refreshed) {
+                            clearInterval(x);
+                            window.location.reload();
+                        }
                     });
-                }, 1000);
+                }, 10000);
             </script>`;
 
             // If err isn't undefined, we should return that.
@@ -76,7 +81,7 @@ module.exports = (source, out, port) => {
                     'Content-Type': 'text/html',
                     'Content-Length': content.length,
                 });
-                res.write(content);
+                res.end(content);
             }
 
             // Load the index file.
@@ -96,7 +101,7 @@ module.exports = (source, out, port) => {
                     'Content-Type': 'text/html',
                     'Content-Length': content.length,
                 });
-                res.write(content);
+                res.end(content);
                 return;
             }
 
@@ -106,11 +111,15 @@ module.exports = (source, out, port) => {
                 'Content-Type': 'text/html',
                 'Content-Length': html.length,
             });
-            res.send(html);
+            res.end(html);
 
             // Break when we are done.
             break;
-        case '/style.css', '/style.css.map', '/mount.js', '/mount.js.map', '/report.html':
+        case '/style.css':
+        case '/style.css.map':
+        case '/mount.js':
+        case '/mount.js.map':
+        case '/report.html':
             // Grab the static content if possible.
             const contentType = url.endsWith('.map') ? 'application/json; charset=utf-8'
                 : url.endsWith('.js') ? 'text/javascript; charset=utf-8' : url.endsWith('.html') ?
@@ -126,7 +135,7 @@ module.exports = (source, out, port) => {
                     'Content-Type': 'text/html',
                     'Content-Length': 10,
                 });
-                res.write('Not found.');
+                res.end('Not found.');
                 return;
             }
             res.writeHead(200, {
@@ -142,7 +151,7 @@ module.exports = (source, out, port) => {
                 'Content-Type': 'text/html',
                 'Content-Length': 10,
             });
-            res.write('Not found.');
+            res.end('Not found.');
         }
     };
 
