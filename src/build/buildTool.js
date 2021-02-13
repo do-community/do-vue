@@ -19,10 +19,10 @@ const configGenerator = require('../webpack.config');
 const path = require('path');
 const ensureDir = require('./ensureDir');
 
-const build = async (source, out) => {
+const build = async (source, out, dev) => {
     const abs = x => path.join(process.cwd(), path.normalize(x));
     const config = configGenerator(abs(source), abs(out));
-    config.mode = 'production';
+    config.mode = dev ? 'development' : 'production';
     return new Promise((res, rej) => webpack(config, (err, stats) => {
         if (err || stats.hasErrors()) {
             console.error(err ? err.message : stats.toString());
@@ -35,7 +35,7 @@ const build = async (source, out) => {
     }));
 };
 
-module.exports = async (source, out) => {
+module.exports = async (source, out, dev) => {
     // Create target directory
     ensureDir(out);
 
@@ -43,5 +43,6 @@ module.exports = async (source, out) => {
     await build(
         source,
         out,
+        dev,
     );
 };
