@@ -155,7 +155,7 @@ module.exports = (source, out, port) => {
     build();
 
     // Handle source changes.
-    chokidar.watch(out).on('change', build);
+    chokidar.watch(source).on('change', build);
 
     // Start the dev server.
     const server = http.createServer(handleRequest);
