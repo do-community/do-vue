@@ -19,6 +19,7 @@ const fs = require('fs');
 const chokidar = require('chokidar');
 const path = require('path');
 const buildTool = require('./buildTool');
+const URL = require('url');
 
 module.exports = (source, out, port) => {
     // Defines when the page was last updated.
