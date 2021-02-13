@@ -30,7 +30,8 @@ module.exports = (source, out, port) => {
     // Handle HTTP requests to the development server.
     const handleRequest = async (req, res) => {
         let fp;
-        switch (req.path) {
+        const url = URL.parse(req.url).pathname;
+        switch (url) {
         case '/do-vue-dev/_lastUpdated':
             // Return the number.
             const j = JSON.stringify(lastUpdated);
@@ -110,10 +111,10 @@ module.exports = (source, out, port) => {
             break;
         case '/style.css', '/style.css.map', '/mount.js', '/mount.js.map', '/report.html':
             // Grab the static content if possible.
-            const contentType = res.path.endsWith('.map') ? 'application/json; charset=utf-8'
-                : res.path.endsWith('.js') ? 'text/javascript; charset=utf-8' : res.path.endsWith('.html') ?
+            const contentType = url.endsWith('.map') ? 'application/json; charset=utf-8'
+                : url.endsWith('.js') ? 'text/javascript; charset=utf-8' : url.endsWith('.html') ?
                 'text/html; charset=utf-8' : 'text/css; charset=utf-8';
-            fp = path.join(out, `.${res.path}`);
+            fp = path.join(out, `.${url}`);
             let stat;
             try {
                 // Try and get the file information.
