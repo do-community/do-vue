@@ -104,7 +104,7 @@ module.exports = (source, dest) => ({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
-        new BundleAnalyzerPlugin({analyzerMode: 'static'}),
+        new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),
         {
