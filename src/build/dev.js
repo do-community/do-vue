@@ -28,9 +28,9 @@ module.exports = (source, out, port) => {
     let err;
 
     // Handle HTTP requests to the development server.
-    const handleRequest = async (_, res) => {
+    const handleRequest = async (req, res) => {
         let fp;
-        switch (res.path) {
+        switch (req.path) {
         case '/do-vue-dev/_lastUpdated':
             // Return the number.
             const j = JSON.stringify(lastUpdated);
