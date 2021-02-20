@@ -19,7 +19,9 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
 module.exports = (source, out, port) => {
-    const compiler = webpack(config(source, out));
+    const abs = x => path.join(process.cwd(), path.normalize(x));
+    out = abs(out);
+    const compiler = webpack(config(abs(source), out));
     const server = new WebpackDevServer(compiler, {
         contentBase: out,
     });
