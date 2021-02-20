@@ -73,7 +73,13 @@ module.exports = (source, dest) => ({
             {
                 test: /\.html$/,
                 use: [
-                    'html-loader',
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            sources: false,
+                            minimize: false,
+                        },
+                    },
                     {
                         loader: 'posthtml-loader',
                         options: {
