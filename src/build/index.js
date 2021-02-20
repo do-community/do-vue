@@ -20,6 +20,6 @@ const cleanDist = () => require('./cleanDist')();
 const createGitHubComment = args => require('./createGitHubComment')(args);
 const ensureDir = dir => require('./ensureDir')(dir);
 const fetchTemplate = () => require('./fetchTemplate')();
-const dev = (source, out, port) => require('./dev')(source, out, port);
+const dev = (source, out, port) => require('./dev')(source, out, Number(port));
 
 module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate, dev };
