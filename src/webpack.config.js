@@ -5,12 +5,12 @@ const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
         'mount.js': path.join(source, 'mount.js'),
-        'index.html': path.join(source, 'index.html'),
     },
     output: {
         path: dest,
@@ -73,7 +73,6 @@ module.exports = (source, dest) => ({
             {
                 test: /\.html$/,
                 use: [
-                    'extract-loader',
                     {
                         loader: 'posthtml-loader',
                         options: {
@@ -106,5 +105,10 @@ module.exports = (source, dest) => ({
         new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+            inject: false,
+            minify: false,
+        }),
     ],
 });
