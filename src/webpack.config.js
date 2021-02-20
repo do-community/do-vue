@@ -106,7 +106,7 @@ module.exports = (source, dest) => ({
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: path.join(source, 'index.html'),
             inject: false,
             minify: false,
         }),
