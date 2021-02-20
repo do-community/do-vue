@@ -5,13 +5,12 @@ const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const fs = require('fs').promises;
 
 module.exports = (source, dest) => ({
     devtool: 'source-map',
     entry: {
         'mount.js': path.join(source, 'mount.js'),
-        '__index_tmp.js': path.join(source, 'index.html'),
+        'index.html': path.join(source, 'index.html'),
     },
     output: {
         path: dest,
@@ -74,7 +73,7 @@ module.exports = (source, dest) => ({
             {
                 test: /\.html$/,
                 use: [
-                    'file-loader',
+                    'extract-loader',
                     {
                         loader: 'posthtml-loader',
                         options: {
@@ -107,22 +106,5 @@ module.exports = (source, dest) => ({
         new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),
-        {
-            apply: compiler => compiler.hooks.afterEmit.tapPromise('HTMLPatchingPlugin', async () => {
-                try {
-                    await fs.unlink(path.join(dest, '__index_tmp.js'));
-                } catch (_) {
-                    // Exit on deletion errors. This is the build step that involves the temp JS file.
-                    return;
-                }
-                for (const fname of await fs.readdir(dest)) {
-                    if (fname.endsWith('.html')) {
-                        await fs.rename(path.join(dest, fname), path.join(dest, 'index.html'));
-                        return;
-                    }
-                }
-                throw new Error('no HTML found');
-            }),
-        },
     ],
 });
