@@ -16,6 +16,7 @@ limitations under the License.
 
 const config = require('../webpack.config');
 const webpack = require('webpack');
+const path = require('path');
 const WebpackDevServer = require('webpack-dev-server');
 
 module.exports = (source, out, port) => {
