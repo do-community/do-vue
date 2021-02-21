@@ -32,5 +32,5 @@ module.exports = (source, out, port) => {
             process.exit(1);
         }
         console.log(`Serving on ${port}.`);
-    })
+    });
 };
