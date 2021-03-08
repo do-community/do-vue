@@ -22,15 +22,15 @@ const WebpackDevServer = require('webpack-dev-server');
 module.exports = (source, out, port) => {
     const abs = x => path.join(process.cwd(), path.normalize(x));
     out = abs(out);
-    const compiler = webpack(config(abs(source), out));
+    const compiler = webpack(config(abs(source), out, true));
     const server = new WebpackDevServer(compiler, {
         contentBase: out,
+        hot: true,
     });
     server.listen(port, 'localhost', err => {
         if (err) {
             console.error(err);
             process.exit(1);
         }
-        console.log(`Serving on ${port}.`);
-    })
+    });
 };

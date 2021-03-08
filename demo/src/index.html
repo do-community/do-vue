@@ -1,0 +1,35 @@
+<!--
+Copyright 2021 DigitalOcean
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<extends src="../build/base.html">
+    <block name="title"><title>do-vue | DigitalOcean</title></block>
+    <block name="head">
+        <link rel="stylesheet" href="style.css">
+    </block>
+    <block name="content">
+        <div class="do-vue">
+            <p>
+                Count: <span id="counter">0</span> | <a href="javascript:addOne()">Add One</a>
+            </p>
+            <p>
+                <i>(this test specifically uses the window to ensure webpack is behaving properly)</i>
+            </p>
+        </div>
+    </block>
+    <block name="script">
+        <script src="mount.js"></script>
+    </block>
+</extends>

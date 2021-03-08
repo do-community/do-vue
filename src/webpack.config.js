@@ -7,8 +7,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = (source, dest) => ({
+module.exports = (source, dest, dev) => ({
     devtool: 'source-map',
+    mode: dev ? 'development' : 'production',
     entry: {
         'mount.js': path.join(source, 'mount.js'),
     },
@@ -109,6 +110,7 @@ module.exports = (source, dest) => ({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
+        new webpack.HotModuleReplacementPlugin(),
         new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({filename: 'style.css'}),

@@ -19,10 +19,9 @@ const configGenerator = require('../webpack.config');
 const path = require('path');
 const ensureDir = require('./ensureDir');
 
-const build = async (source, out, dev) => {
+const build = async (source, out) => {
     const abs = x => path.join(process.cwd(), path.normalize(x));
     const config = configGenerator(abs(source), abs(out));
-    config.mode = dev ? 'development' : 'production';
     return new Promise((res, rej) => webpack(config, (err, stats) => {
         if (err || stats.hasErrors()) {
             console.error(err ? err.message : stats.toString());
