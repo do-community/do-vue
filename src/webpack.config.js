@@ -99,7 +99,7 @@ module.exports = (source, dest, dev) => ({
             fs: require.resolve('browserify-fs'),
             buffer: require.resolve('buffer/'),
             util: require.resolve('util/'),
-            stream: require.resolve('stream-browserify'),
+            stream: require.resolve('readable-stream'),
             events: require.resolve('events/'),
             constants: require.resolve('constants-browserify'),
         },
