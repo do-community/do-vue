@@ -127,9 +127,9 @@ module.exports = (source, dest, dev) => ({
             Buffer: ['buffer', 'Buffer'],
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}),
+        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin({filename: 'style.css'}),
+        new MiniCssExtractPlugin({ filename: 'style.css' }),
         new HtmlWebpackPlugin({
             template: path.join(source, 'index.html'),
             inject: false,
