@@ -10,7 +10,7 @@
     "demo:init": "cd demo && node ../src/cli.js template",
     "demo:dev": "npm run demo:init && cd demo && node ../src/cli.js dev ./src ./dev 8000",
     "demo:build": "npm run demo:init && cd demo && node ../src/cli.js tool ./src ./dist",
-    "deploy:spaces:comment": "node ./src/cli.js comment do-vue",
+    "deploy:spaces:comment": "node ./src/cli.js comment do-vue"
   },
   "bin": {
     "do-vue": "src/cli.js"
