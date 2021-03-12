@@ -4,7 +4,9 @@
   "description": "Custom Vue templates & resources for DigitalOcean Community tools.",
   "main": "src/cli.js",
   "scripts": {
-    "test": "eslint './src/**/*.{vue,js}' && npm run demo:build",
+    "test": "npm run test:eslint && npm run demo:build",
+    "test:eslint": "eslint './src/**/*.{vue,js}'",
+    "test:eslint:fix": "npm run test:eslint -- --fix",
     "demo:init": "cd demo && node ../src/cli.js template",
     "demo:dev": "npm run demo:init && cd demo && node ../src/cli.js dev ./src ./dev 8000",
     "demo:build": "npm run demo:init && cd demo && node ../src/cli.js tool ./src ./dist",
