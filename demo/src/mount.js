@@ -18,6 +18,9 @@ limitations under the License.
 // We are not trying to test Vue or React here, we have plenty of tools to do that.
 // Rather, we are making sure the CLI builds it and handles things like hot reloading properly.
 
+// Imports the CSS.
+import './scss/style';
+
 // Test importing from a very far away path (webpack config testing).
 import incrementCounter from './in/a/path/far/far/away/increment';
 
