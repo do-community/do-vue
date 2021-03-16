@@ -27,7 +27,7 @@ module.exports = (source, out, port) => {
         contentBase: contentOut,
         hot: true,
     });
-    server.listen(port, 'localhost', err => {
+    server.listen(Number(port), 'localhost', err => {
         if (err) {
             console.error(err);
             process.exit(1);
