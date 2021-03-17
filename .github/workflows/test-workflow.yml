@@ -22,3 +22,19 @@ jobs:
       run: |
         npm ci
         npm test
+
+    - name: Deploy commit to DigitalOcean Spaces
+      run: aws s3 sync ./demo/dist s3://${{ secrets.SPACES_BUCKET }}/commits/do-vue/${{ github.sha }} --endpoint=https://${{ secrets.SPACES_REGION }}.digitaloceanspaces.com --acl public-read --content-encoding utf8
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.SPACES_REGION }}
+
+    - name: Leave a comment
+      run: npm run deploy:spaces:comment
+      env:
+        REPO_NAME: ${{ github.repository }}
+        COMMIT_SHA: ${{ github.sha }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SPACES_REGION: ${{ secrets.SPACES_REGION }}
+        SPACES_BUCKET: ${{ secrets.SPACES_BUCKET }}

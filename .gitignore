@@ -2,3 +2,6 @@ node_modules
 .idea
 .vscode
 ./build
+demo/build
+demo/dev
+demo/dist

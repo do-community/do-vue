@@ -22,38 +22,42 @@ process.on('unhandledRejection', (error, promise) => {
     process.exit(1);
 });
 
-const build = require('./build');
-
 const [, , ...args] = process.argv;
 
 switch (args[0]) {
     case 'svgs':
-        if (args.length >= 2) build.buildSVGs(args[1]);
+        if (args.length >= 2) require('./build/buildSVGs')(args[1]);
         else console.log('Missing source dir for SVGs');
         break;
 
     case 'tool':
-        if (args.length >= 3) build.buildTool(args[1], args[2]);
+        if (args.length >= 3) require('./build/buildTool')(args[1], args[2]);
         else console.log('Missing source/output dirs for tool');
         break;
 
+    case 'dev':
+        if (args.length >= 4) require('./build/dev')(args[1], args[2], args[3]);
+        else console.log('Missing source/output dirs and port for dev');
+        break;
+
     case 'clean':
-        build.cleanDist();
+        require('./build/cleanDist')();
         break;
 
     case 'comment':
-        if (args.length >= 2) build.createGitHubComment(args.slice(1));
+        if (args.length >= 2) require('./build/createGitHubComment')(args.slice(1));
         else console.log('Missing tool(s) map for comment');
         break;
 
     case 'template':
-        build.fetchTemplate();
+        require('./build/fetchTemplate')();
         break;
 
     default:
         console.log('Usage:');
         console.log('  svgs <source dir>');
         console.log('  tool <source dir> <output dir>');
+        console.log('  dev <source dir> <output dir> <port>');
         console.log('  clean');
         console.log('  comment <... name:dist/dir>');
         console.log('  template');

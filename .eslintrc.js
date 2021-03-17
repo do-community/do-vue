@@ -13,6 +13,7 @@ module.exports = {
     },
     rules: {
         'linebreak-style': ['error', 'unix'],
+        'no-case-declarations': 0,
         semi: ['error', 'always'],
         quotes: ['error', 'single'],
         'comma-dangle': ['error', 'always-multiline'],

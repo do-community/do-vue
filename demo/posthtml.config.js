@@ -1,5 +1,5 @@
 /*
-Copyright 2019 DigitalOcean
+Copyright 2021 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,11 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const buildSVGs = require('./buildSVGs');
-const buildTool = require('./buildTool');
-const cleanDist = require('./cleanDist');
-const createGitHubComment = require('./createGitHubComment');
-const ensureDir = require('./ensureDir');
-const fetchTemplate = require('./fetchTemplate');
-
-module.exports = { buildSVGs, buildTool, cleanDist, createGitHubComment, ensureDir, fetchTemplate };
+module.exports = {
+    "plugins": {
+        "posthtml-extend": {
+            "root": "./src"
+        },
+    },
+};
