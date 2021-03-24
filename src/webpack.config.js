@@ -76,7 +76,7 @@ module.exports = (source, dest, dev) => ({
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'resolve-url-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader'],
             },
             {
                 test: /\.vue$/,
