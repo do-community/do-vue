@@ -72,11 +72,11 @@ module.exports = (source, dest, dev) => ({
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+                use: [MiniCssExtractPlugin.loader, 'resolve-url-loader', 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'resolve-url-loader', 'css-loader'],
             },
             {
                 test: /\.vue$/,
@@ -100,7 +100,7 @@ module.exports = (source, dest, dev) => ({
                     {
                         loader: 'posthtml-loader',
                         options: {
-                            config: { 
+                            config: {
                                 path: process.cwd(),
                             },
                         },
