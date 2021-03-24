@@ -44,6 +44,12 @@ module.exports = (source, dest, dev) => ({
     module: {
         rules: [
             {
+                test: /\.(ttf|eot|woff2?)$/,
+                use: {
+                    loader: 'file-loader',
+                },
+            },
+            {
                 test: /\.svg$/,
                 exclude: /node_modules/,
                 use: [
