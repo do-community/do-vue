@@ -72,7 +72,7 @@ module.exports = (source, dest, dev) => ({
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, 'resolve-url-loader', 'css-loader', 'sass-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader', 'sass-loader'],
             },
             {
                 test: /\.css$/,
