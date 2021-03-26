@@ -44,6 +44,12 @@ module.exports = (source, dest, dev) => ({
     module: {
         rules: [
             {
+                test: /\.(ttf|eot|woff2?)$/,
+                use: {
+                    loader: 'file-loader',
+                },
+            },
+            {
                 test: /\.svg$/,
                 exclude: /node_modules/,
                 use: [
@@ -72,11 +78,11 @@ module.exports = (source, dest, dev) => ({
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader', 'sass-loader'],
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader'],
             },
             {
                 test: /\.vue$/,
@@ -100,7 +106,7 @@ module.exports = (source, dest, dev) => ({
                     {
                         loader: 'posthtml-loader',
                         options: {
-                            config: { 
+                            config: {
                                 path: process.cwd(),
                             },
                         },
