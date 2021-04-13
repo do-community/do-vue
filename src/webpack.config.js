@@ -87,6 +87,9 @@ module.exports = (source, dest, dev) => ({
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
+                options: {
+                    hotReload: dev,
+                },
             },
             {
                 test: /\.ya?ml$/,
@@ -132,14 +135,14 @@ module.exports = (source, dest, dev) => ({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
-        new webpack.HotModuleReplacementPlugin(),
+        dev ? new webpack.HotModuleReplacementPlugin() : null,
         new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({ filename: 'style.css' }),
         new HtmlWebpackPlugin({
             template: path.join(source, 'index.html'),
             inject: false,
-            minify: false,
+            minify: !dev,
         }),
-    ],
+    ].filter(x => x !== null),
 });
