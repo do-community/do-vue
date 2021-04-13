@@ -127,6 +127,7 @@ module.exports = (source, dest, dev) => ({
             stream: require.resolve('stream-browserify'),
             events: require.resolve('events/'),
             constants: require.resolve('constants-browserify'),
+            assert: require.resolve('assert/'),
         },
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
