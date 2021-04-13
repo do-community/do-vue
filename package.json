@@ -27,7 +27,7 @@
   "homepage": "https://github.com/do-community/do-vue#readme",
   "dependencies": {
     "babel-loader": "^8.2.2",
-    "browserify-fs": "^1.0.0",
+    "browserify-fs": "git+https://github.com/do-community/browserify-fs.git",
     "buffer": "^6.0.3",
     "constants-browserify": "^1.0.0",
     "css-loader": "^5.2.0",
