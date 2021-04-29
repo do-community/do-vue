@@ -28,12 +28,12 @@ module.exports = (source, dest, dev) => ({
     devtool: 'source-map',
     mode: dev ? 'development' : 'production',
     entry: {
-        'mount.js': path.join(source, 'mount.js'),
+        mount: path.join(source, 'mount.js'),
     },
     output: {
         path: dest,
         publicPath: './',
-        filename: '[name]',
+        filename: '[name].js',
     },
     optimization: {
         minimize: true,
@@ -155,7 +155,7 @@ module.exports = (source, dest, dev) => ({
         // Fix dynamic imports from CDN
         new WebpackRequireFrom({ replaceSrcMethodName: '__replaceWebpackDynamicImport' }),
         { apply: compiler => {
-            compiler.options.entry['mount.js'].import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
+            compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
         } },
     ].filter(x => x !== null),
 });
