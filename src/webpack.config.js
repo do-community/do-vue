@@ -17,11 +17,14 @@ limitations under the License.
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const process = require('process');
+const fs = require('fs');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackRequireFrom = require('webpack-require-from');
+const { default: InjectPlugin, ENTRY_ORDER } = require('webpack-inject-plugin');
 
 module.exports = (source, dest, dev) => ({
     devtool: 'source-map',
@@ -132,18 +135,29 @@ module.exports = (source, dest, dev) => ({
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
     plugins: [
+        // Polyfill process & buffer
         new webpack.ProvidePlugin({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
+        // Enable HMR for dev
         dev ? new webpack.HotModuleReplacementPlugin() : null,
+        // Analyze the bundle
         new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
+        // Support loading Vue templates
         new VueLoaderPlugin(),
+        // Extract our styles to a CSS file
         new MiniCssExtractPlugin({ filename: 'style.css' }),
+        // Generate an output HTML file
         new HtmlWebpackPlugin({
             template: path.join(source, 'index.html'),
             inject: false,
             minify: !dev,
         }),
+        // Fix dynamic imports from CDN
+        new WebpackRequireFrom({ replaceSrcMethodName: '__replaceWebpackDynamicImport' }),
+        new InjectPlugin(() => {
+            return fs.readFileSync(path.join(__dirname, 'webpack-dynamic-import.js'), 'utf8');
+        }, { entryName: 'mount.js', entryOrder: ENTRY_ORDER.First }),
     ].filter(x => x !== null),
 });
