@@ -133,7 +133,7 @@ module.exports = (source, dest, dev) => ({
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
     plugins: [
-        // Fix dynamic imports from CDN
+        // Fix dynamic imports from CDN (inject as first entry point before any imports can happen)
         { apply: compiler => {
             compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
         } },
