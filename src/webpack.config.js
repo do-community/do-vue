@@ -17,14 +17,12 @@ limitations under the License.
 const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const process = require('process');
-const fs = require('fs');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
-const { default: InjectPlugin, ENTRY_ORDER } = require('webpack-inject-plugin');
 
 module.exports = (source, dest, dev) => ({
     devtool: 'source-map',
@@ -156,8 +154,8 @@ module.exports = (source, dest, dev) => ({
         }),
         // Fix dynamic imports from CDN
         new WebpackRequireFrom({ replaceSrcMethodName: '__replaceWebpackDynamicImport' }),
-        new InjectPlugin(() => {
-            return fs.readFileSync(path.join(__dirname, 'webpack-dynamic-import.js'), 'utf8');
-        }, { entryName: 'mount.js', entryOrder: ENTRY_ORDER.First }),
+        { apply: compiler => {
+            compiler.options.entry['mount.js'].import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
+        } },
     ].filter(x => x !== null),
 });
