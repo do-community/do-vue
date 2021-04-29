@@ -133,6 +133,11 @@ module.exports = (source, dest, dev) => ({
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
     plugins: [
+        // Fix dynamic imports from CDN
+        { apply: compiler => {
+            compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
+        } },
+        new WebpackRequireFrom({ methodName: '__webpackDynamicImportURL' }),
         // Polyfill process & buffer
         new webpack.ProvidePlugin({
             process: 'process/browser.js',
@@ -152,10 +157,5 @@ module.exports = (source, dest, dev) => ({
             inject: false,
             minify: !dev,
         }),
-        // Fix dynamic imports from CDN
-        new WebpackRequireFrom({ replaceSrcMethodName: '__replaceWebpackDynamicImport' }),
-        { apply: compiler => {
-            compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
-        } },
     ].filter(x => x !== null),
 });

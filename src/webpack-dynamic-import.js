@@ -14,9 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const originalSrcDir = document.currentScript.src.split('/').slice(0, -1).join('/');
-(typeof global === 'undefined' ? window : global).__replaceWebpackDynamicImport = path => {
-    const base = path.split('/').pop();
-    console.log(`Modifying import ${path} to use dir ${originalSrcDir} and base ${base}`);
-    return `${originalSrcDir}/${base}`;
+const originalSrcDir = document.currentScript.src.split('/').slice(0, -1).join('/') + '/';
+window.__webpackDynamicImportURL = () => {
+    console.info(`Using ${originalSrcDir} for webpack dynamic import`);
+    return originalSrcDir;
 };
