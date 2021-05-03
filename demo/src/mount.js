@@ -35,3 +35,8 @@ window.addOne = () => {
 
 // Make sure other elements aren't in global scope.
 if (window.counter === 0 || window.counterElement) throw new Error('Parts of mount should not be in global scope.');
+
+// Try out dynamic stuff
+window.loadDynamicAlert = async () => {
+    await import('./dynamic/alert');
+};

@@ -58,6 +58,7 @@
     "webpack": "^5.30.0",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-dev-server": "^3.11.2",
+    "webpack-require-from": "^1.8.3",
     "yaml-loader": "^0.6.0"
   },
   "devDependencies": {

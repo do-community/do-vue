@@ -22,17 +22,18 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackRequireFrom = require('webpack-require-from');
 
 module.exports = (source, dest, dev) => ({
     devtool: 'source-map',
     mode: dev ? 'development' : 'production',
     entry: {
-        'mount.js': path.join(source, 'mount.js'),
+        mount: path.join(source, 'mount.js'),
     },
     output: {
         path: dest,
         publicPath: './',
-        filename: '[name]',
+        filename: '[name].js',
     },
     optimization: {
         minimize: true,
@@ -132,14 +133,25 @@ module.exports = (source, dest, dev) => ({
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.css', '.scss', '.sass', '.html', '.vue', '.yml', '.yaml'],
     },
     plugins: [
+        // Fix dynamic imports from CDN (inject as first entry point before any imports can happen)
+        { apply: compiler => {
+            compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
+        } },
+        new WebpackRequireFrom({ methodName: '__webpackDynamicImportURL' }),
+        // Polyfill process & buffer
         new webpack.ProvidePlugin({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
+        // Enable HMR for dev
         dev ? new webpack.HotModuleReplacementPlugin() : null,
+        // Analyze the bundle
         new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
+        // Support loading Vue templates
         new VueLoaderPlugin(),
+        // Extract our styles to a CSS file
         new MiniCssExtractPlugin({ filename: 'style.css' }),
+        // Generate an output HTML file
         new HtmlWebpackPlugin({
             template: path.join(source, 'index.html'),
             inject: false,
