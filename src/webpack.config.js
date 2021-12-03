@@ -143,6 +143,8 @@ module.exports = (source, dest, dev) => ({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
+        // Inject full environment
+        new webpack.EnvironmentPlugin(Object.keys(process.env)),
         // Enable HMR for dev
         dev ? new webpack.HotModuleReplacementPlugin() : null,
         // Analyze the bundle
