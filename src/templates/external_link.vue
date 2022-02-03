@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,11 +16,7 @@ limitations under the License.
 
 <template>
     <span>
-        <a :href="this.$props.link"
-           target="_blank"
-           rel="noreferrer"
-           v-text="this.$props.text"
-        ></a>
+        <a :href="link" target="_blank" rel="noreferrer" v-text="text"></a>
         <i class="fas fa-external-link-alt"></i>
     </span>
 </template>

@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ limitations under the License.
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">
-                    {{ this.$props.title }}
+                    {{ title }}
                 </p>
                 <button class="delete" :aria-label="close" @click="toggle"></button>
             </header>

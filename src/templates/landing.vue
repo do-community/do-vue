@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@ limitations under the License.
 
 <template>
     <div class="landing">
-        <div class="background-top" v-html="this.$props.backgroundTop"></div>
-        <div class="background-bottom" v-html="this.$props.backgroundBottom"></div>
+        <div class="background-top" v-html="backgroundTop"></div>
+        <div class="background-bottom" v-html="backgroundBottom"></div>
         <div class="container">
-            <h1>{{ this.$props.title }}</h1>
-            <p v-html="this.$props.description"></p>
+            <h1>{{ title }}</h1>
+            <p v-html="description"></p>
 
             <slot></slot>
 
             <ExternalLink
                 class="github-link"
                 :text="i18n.templates.landing.github"
-                :link="this.$props.github"
+                :link="github"
             ></ExternalLink>
         </div>
     </div>

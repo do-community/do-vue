@@ -1,5 +1,5 @@
 <!--
-Copyright 2019 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ limitations under the License.
                 <a href="#top" class="button is-primary is-small">{{ i18n.templates.footer.backToTop }}</a>
             </p>
             <p>
-                <span v-for="part in dataUrlParser(this.$props.text)">
+                <span v-for="part in dataUrlParser(text)">
                     <span v-if="typeof part === 'string'">
                         {{ part }}
                     </span>
