@@ -144,7 +144,7 @@ module.exports = (source, dest, dev) => ({
         { apply: compiler => {
             compiler.options.entry.mount.import.unshift(path.join(__dirname, 'webpack-dynamic-import.js'));
         } },
-        new WebpackRequireFrom({ methodName: '__webpackDynamicImportURL' }),
+        new WebpackRequireFrom({ methodName: '__webpackDynamicImportURL', suppressErrors: true }),
         // Polyfill process & buffer
         new webpack.ProvidePlugin({
             process: 'process/browser.js',
