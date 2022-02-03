@@ -1,5 +1,5 @@
 /*
-Copyright 2021 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,8 +34,7 @@ module.exports = async () => {
         <title>Blank Template</title>
     </head>
     <body>
-        <div class="wrapper layout-wrapper">
-        </div>
+        <div class="app"></div>
     </body>
 </html>
 `;
@@ -52,23 +51,32 @@ module.exports = async () => {
     // Parse
     const dom = new JSDOM(rawHTML);
     const { document } = dom.window;
-    const nav = document.querySelector('nav.do_nav');
 
-    if (nav) {
-        // Nuke top log in button
-        nav.querySelectorAll('ul.utility li[role="menuitem"]').forEach(node => {
-            if (node.innerHTML.includes('<header>Log in to</header>')) {
-                node.remove();
-            }
-        });
+    // Remove scripts
+    document.querySelectorAll('script[src]').forEach(node => {
+        node.remove();
+    });
 
-        // Nuke the primary log in button
-        nav.querySelectorAll('ul.primary li[role="menuitem"]').forEach(node => {
-            if (node.innerHTML.includes('Sign Up</a>')) {
-                node.remove();
-            }
-        });
-    }
+    // Nuke top log in button
+    document.querySelectorAll('[class*="TinyTopNav"] li').forEach(node => {
+        if (node.innerHTML.toLowerCase().includes('sign in')) {
+            node.remove();
+        }
+    });
+
+    // Nuke the primary log in button
+    document.querySelectorAll('[class*="NavBarContainer"] a').forEach(node => {
+        if (node.innerHTML.toLowerCase().includes('sign up')) {
+            node.remove();
+        }
+    });
+
+    // Nuke the www log in and sign up buttons
+    document.querySelectorAll('[class*="SecondaryNavContainer"] a').forEach(node => {
+        if (node.innerHTML.toLowerCase().includes('log in') || node.innerHTML.toLowerCase().includes('sign up')) {
+            node.remove();
+        }
+    });
 
     // Deal with hard URLs
     document.querySelectorAll('[href]').forEach(node => {
@@ -100,26 +108,26 @@ module.exports = async () => {
         document.head.insertBefore(charset, document.head.firstChild);
     }
 
+    // Inject content block (for blank template)
+    const blankContent = document.querySelector('body > .app');
+    if (blankContent) blankContent.innerHTML = '<block name="content"></block>';
+
+    // Inject content block (for Community)
+    const communityContent = document.querySelector('[class*="StyledLayout"] > div:not([class*="TinyTopNav"])');
+    if (communityContent) communityContent.innerHTML = '<block name="content"></block>';
+
     // Inject content block (for WWW)
-    const main = document.querySelector('.container.container-main');
-    if (main) main.innerHTML = '<section class="www-Section www-Section--insetSquish">' +
-        '<block name="content"></block></section>';
+    const wwwContent = document.querySelector('.slices');
+    if (wwwContent) {
+        wwwContent.style.paddingTop = '112px';
+        wwwContent.innerHTML = '<block name="content"></block>';
+    }
+
+    // Inject the title block
+    document.querySelector('title').outerHTML = '<block name="title"><title>DigitalOcean</title></block>';
 
     // Convert back to raw
     rawHTML = dom.serialize();
-
-    // Inject title block
-    rawHTML = rawHTML.replace(/<title(.*?)>(.+?)<\/title>/, '<block name="title"><title>DigitalOcean</title></block>');
-
-    // Inject head block
-    rawHTML = rawHTML.replace('</head>', '<block name="head"></block></head>');
-
-    // Inject content block (for Community)
-    rawHTML = rawHTML.replace(/<div class=['"]wrapper layout-wrapper['"]>/,
-        '<div class="wrapper layout-wrapper"><block name="content"></block>');
-
-    // Inject script block
-    rawHTML = rawHTML.replace('</body>', '<block name="script"></block></body>');
 
     // Inject last fetch comment
     rawHTML = rawHTML.replace('<head>', `<!-- Last fetch from www.digitalocean.com @ ${(new Date()).toISOString()} -->\n<head>`);
