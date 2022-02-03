@@ -1,5 +1,5 @@
 /*
-Copyright 2021 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,13 +20,26 @@ const path = require('path');
 const WebpackDevServer = require('webpack-dev-server');
 
 module.exports = (source, out, port) => {
+    // Get the absolute path to the output directory
     const abs = x => path.join(process.cwd(), path.normalize(x));
     const contentOut = abs(out);
-    const compiler = webpack(config(abs(source), contentOut, true));
-    const server = new WebpackDevServer(compiler, {
-        contentBase: contentOut,
+
+    // Get our config and tweak the output path for dev server
+    const conf = config(abs(source), contentOut, true);
+    conf.output.publicPath = '/';
+
+    // Create the dev server
+    const compiler = webpack(conf);
+    const server = new WebpackDevServer({
+        ...WebpackDevServer.devServer,
+        static: {
+            directory: contentOut,
+            serveIndex: false,
+        },
         hot: true,
-    });
+    }, compiler);
+
+    // Start the server
     server.listen(Number(port), 'localhost', err => {
         if (err) {
             console.error(err);
