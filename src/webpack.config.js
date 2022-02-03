@@ -45,10 +45,8 @@ module.exports = (source, dest, dev) => ({
     module: {
         rules: [
             {
-                test: /\.(ttf|eot|woff2?)$/,
-                use: {
-                    loader: 'file-loader',
-                },
+                test: /\.(otf|ttf|eot|woff2?)$/i,
+                type: 'asset/resource',
             },
             {
                 test: /\.svg$/,
@@ -79,11 +77,20 @@ module.exports = (source, dest, dev) => ({
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader', 'sass-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { sourceMap: true } },
+                    { loader: 'resolve-url-loader', options: { sourceMap: true } },
+                    { loader: 'sass-loader', options: { sourceMap: true } },
+                ],
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { sourceMap: true } },
+                    { loader: 'resolve-url-loader', options: { sourceMap: true } },
+                ],
             },
             {
                 test: /\.vue$/,
