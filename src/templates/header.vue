@@ -1,5 +1,5 @@
 <!--
-Copyright 2020 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ limitations under the License.
     <div class="header">
         <div class="container">
             <div>
-                <h1><a :href="baseUrl">{{ this.$props.title }}</a></h1>
+                <h1><a :href="baseUrl">{{ title }}</a></h1>
                 <h3><slot name="description"></slot></h3>
                 <slot name="header"></slot>
             </div>
