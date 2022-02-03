@@ -16,11 +16,7 @@ limitations under the License.
 
 <template>
     <span>
-        <a :href="link"
-           target="_blank"
-           rel="noreferrer"
-           v-text="text"
-        ></a>
+        <a :href="link" target="_blank" rel="noreferrer" v-text="text"></a>
         <i class="fas fa-external-link-alt"></i>
     </span>
 </template>
