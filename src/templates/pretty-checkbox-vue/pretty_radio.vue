@@ -1,4 +1,4 @@
-/*
+<!--
 Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,16 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+-->
 
-.font-change {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-}
+<template>
+    <PrettyInput type="radio">
+        <template v-for="(_, slot) in $slots" #[slot]="scope">
+            <slot :name="slot" v-bind="scope || {}" />
+        </template>
+    </PrettyInput>
+</template>
+
+<script setup>
+    import PrettyInput from './pretty_input';
+</script>

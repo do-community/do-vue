@@ -18,17 +18,7 @@ limitations under the License.
     <block name="title"><title>do-vue | DigitalOcean</title></block>
     <block name="content">
         <link rel="stylesheet" href="style.css">
-        <div class="do-vue">
-            <p class="font-change">
-                Count: <span id="counter">0</span> | <a href="javascript:addOne()">Add One</a>
-            </p>
-            <p>
-                <a href="javascript:loadDynamicAlert()">Load dynamic alert</a>
-            </p>
-            <p>
-                <i>(this test specifically uses the window to ensure webpack is behaving properly)</i>
-            </p>
-        </div>
+        <div id="app"></div>
         <script src="mount.js"></script>
     </block>
 </extends>
