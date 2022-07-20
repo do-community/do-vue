@@ -16,9 +16,10 @@ limitations under the License.
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const fetch = require('node-fetch');
 const fs = require('fs');
 const ensureDir = require('./ensureDir');
+
+const fetch = import('node-fetch');
 
 module.exports = async () => {
     console.log('Fetching Community Tools template from www.digitalocean.com...');
@@ -40,11 +41,11 @@ module.exports = async () => {
 `;
     } else if (process.env.WWW_TEMPLATE === 'true') {
         // Support developing a tool for WWW
-        const res = await fetch('https://www.digitalocean.com/pricing/calculator');
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/pricing/calculator'));
         rawHTML = await res.text();
     } else {
         // Default to a tool for Community tooling
-        const res = await fetch('https://www.digitalocean.com/community/tools/blank');
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community/tools/blank'));
         rawHTML = await res.text();
     }
 
