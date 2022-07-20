@@ -1,5 +1,5 @@
 /*
-Copyright 2021 DigitalOcean
+Copyright 2022 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const fetch = require('node-fetch');
+const fetch = import('node-fetch');
 
 module.exports = async args => {
     const baseURL = `https://${process.env.SPACES_BUCKET}.${process.env.SPACES_REGION}.digitaloceanspaces.com`;
@@ -28,7 +28,7 @@ module.exports = async args => {
 | ${tools.join(' | ')} |
 |${(new Array(tools.length).fill('---')).join('|')}|`;
 
-    const res = await fetch(
+    const res = await fetch.then(({ default: run }) => run(
         `https://api.github.com/repos/${process.env.REPO_NAME}/commits/${process.env.COMMIT_SHA}/comments`,
         {
             method: 'POST',
@@ -41,7 +41,7 @@ module.exports = async args => {
                 Authorization: `Basic ${Buffer.from(`github-actions:${process.env.GITHUB_ACCESS_TOKEN}`).toString('base64')}`,
             },
         },
-    ).catch(async e => {
+    )).catch(async e => {
         console.log(await e.json());
         process.exit(1);
     });

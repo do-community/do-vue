@@ -8,7 +8,7 @@ module.exports = {
         'plugin:vue/recommended',
     ],
     parserOptions: {
-        ecmaVersion: 2018,
+        ecmaVersion: 2022,
         sourceType: 'module',
     },
     rules: {
@@ -28,5 +28,6 @@ module.exports = {
         'vue/no-unused-vars': 0,
         'vue/html-self-closing': 0,
         'vue/multi-word-component-names': 0,
+        'vue/no-reserved-component-names': 0,
     },
 };
