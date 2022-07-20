@@ -142,6 +142,10 @@ module.exports = (source, dest, dev) => ({
             process: 'process/browser.js',
             Buffer: ['buffer', 'Buffer'],
         }),
+        // Map node: imports to regular imports
+        new webpack.NormalModuleReplacementPlugin(/^node:/, resource => {
+            resource.request = resource.request.replace(/^node:/, '');
+        }),
         // Inject full environment
         new webpack.EnvironmentPlugin(Object.keys(process.env)),
         // Enable HMR for dev
