@@ -51,17 +51,9 @@ module.exports = (source, dest, dev) => ({
             {
                 test: /\.svg$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                    },
-                    {
-                        loader: 'react-svg-loader',
-                        options: {
-                            jsx: true,
-                        },
-                    },
-                ],
+                use: {
+                    loader: '@svgr/webpack',
+                },
             },
             {
                 test: /\.jsx?$/,
