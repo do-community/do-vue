@@ -67,5 +67,10 @@
   "devDependencies": {
     "eslint": "^8.9.0",
     "eslint-plugin-vue": "^8.4.1"
+  },
+  "overrides": {
+    "pretty-checkbox-vue": {
+      "vue": "$vue"
+    }
   }
 }
