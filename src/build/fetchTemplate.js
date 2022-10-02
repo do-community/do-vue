@@ -49,7 +49,7 @@ const baseHtml = async mode => {
     }
 
     return null;
-}
+};
 
 module.exports = async () => {
     console.log('Fetching Community Tools template from www.digitalocean.com...');
