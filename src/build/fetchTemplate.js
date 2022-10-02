@@ -21,15 +21,10 @@ const ensureDir = require('./ensureDir');
 
 const fetch = import('node-fetch');
 
-module.exports = async () => {
-    console.log('Fetching Community Tools template from www.digitalocean.com...');
-
-    // Fetch raw template
-    let rawHTML;
-
-    if (process.env.BLANK_TEMPLATE === 'true') {
-        // Support a blank template for completely local dev
-        rawHTML = `<!DOCTYPE HTML>
+const baseHtml = async mode => {
+    // Support a blank template for completely local dev
+    if (mode === 'blank') {
+        return `<!DOCTYPE HTML>
 <html lang="en">
     <head>
         <title>Blank Template</title>
@@ -39,15 +34,32 @@ module.exports = async () => {
     </body>
 </html>
 `;
-    } else if (process.env.WWW_TEMPLATE === 'true') {
-        // Support developing a tool for WWW
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/pricing/calculator'));
-        rawHTML = await res.text();
-    } else {
-        // Default to a tool for Community tooling
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community/tools/blank'));
-        rawHTML = await res.text();
     }
+
+    // Support developing a tool for WWW
+    if (mode === 'www') {
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/'));
+        return await res.text();
+    }
+
+    // Default to a tool for Community tooling
+    if (mode === 'community') {
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community/tools/blank'));
+        return await res.text();
+    }
+
+    return null;
+}
+
+module.exports = async () => {
+    console.log('Fetching Community Tools template from www.digitalocean.com...');
+
+    // Determine the mode
+    const mode = process.env.BLANK_TEMPLATE === 'true' ? 'blank' :
+        (process.env.WWW_TEMPLATE === 'true' ? 'www' : 'community');
+
+    // Fetch raw template
+    let rawHTML = await baseHtml(mode);
 
     // Parse
     const dom = new JSDOM(rawHTML);
@@ -56,27 +68,6 @@ module.exports = async () => {
     // Remove scripts
     document.querySelectorAll('script[src]').forEach(node => {
         node.remove();
-    });
-
-    // Nuke top log in button
-    document.querySelectorAll('[class*="TinyTopNav"] li').forEach(node => {
-        if (node.innerHTML.toLowerCase().includes('sign in')) {
-            node.remove();
-        }
-    });
-
-    // Nuke the primary log in button
-    document.querySelectorAll('[class*="NavBarContainer"] a').forEach(node => {
-        if (node.innerHTML.toLowerCase().includes('sign up')) {
-            node.remove();
-        }
-    });
-
-    // Nuke the www log in and sign up buttons
-    document.querySelectorAll('[class*="SecondaryNavContainer"] a').forEach(node => {
-        if (node.innerHTML.toLowerCase().includes('log in') || node.innerHTML.toLowerCase().includes('sign up')) {
-            node.remove();
-        }
     });
 
     // Deal with hard URLs
@@ -90,6 +81,12 @@ module.exports = async () => {
         const src = node.getAttribute('src');
         if (src.startsWith('/')) {
             node.setAttribute('src', `https://www.digitalocean.com${src}`);
+        }
+    });
+    document.querySelectorAll('[srcset]').forEach(node => {
+        const srcset = node.getAttribute('srcset');
+        if (srcset.startsWith('/')) {
+            node.setAttribute('srcset', `https://www.digitalocean.com${srcset}`);
         }
     });
     document.querySelectorAll('[content]').forEach(node => {
@@ -109,19 +106,39 @@ module.exports = async () => {
         document.head.insertBefore(charset, document.head.firstChild);
     }
 
-    // Inject content block (for blank template)
-    const blankContent = document.querySelector('body > .app');
-    if (blankContent) blankContent.innerHTML = '<block name="content"></block>';
+    // Remove nav log in + sign up buttons
+    if (mode === 'www' || mode === 'community') {
+        document.querySelectorAll('ul[class*="SecondaryMenu"] li').forEach(node => {
+            if (node.innerHTML.toLowerCase().includes('log in') || node.innerHTML.toLowerCase().includes('sign up')) {
+                node.remove();
+            }
+        });
+    }
 
-    // Inject content block (for Community)
-    const communityContent = document.querySelector('[class*="StyledLayout"] > div:not([class*="TinyTopNav"])');
-    if (communityContent) communityContent.innerHTML = '<block name="content"></block>';
+    // Remove www content + fix footer wave
+    if (mode === 'www') {
+        document.querySelectorAll('body > div > section').forEach(node => {
+            node.remove();
+        });
 
-    // Inject content block (for WWW)
-    const wwwContent = document.querySelector('.slices');
-    if (wwwContent) {
-        wwwContent.style.paddingTop = '112px';
-        wwwContent.innerHTML = '<block name="content"></block>';
+        document.querySelector('body > div > div[class*="FooterSeaWave"]').style.backgroundColor = '#fff';
+    }
+
+    // Remove community content
+    if (mode === 'community') {
+        document.querySelectorAll('div[class*="LayoutCommunity"] > div:not([class*="Navigation"])').forEach(node => {
+            node.remove();
+        });
+    }
+
+    // Inject content block
+    const content = document.createElement('block');
+    content.setAttribute('name', 'content');
+    if (mode === 'blank') {
+        document.querySelector('body > .app').appendChild(content);
+    }
+    if (mode === 'www' || mode === 'community') {
+        document.querySelector('div[class*="Navigation"] > nav').parentElement.insertAdjacentElement('afterend', content);
     }
 
     // Inject the title block
