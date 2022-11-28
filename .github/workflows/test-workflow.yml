@@ -1,16 +1,17 @@
-name: Test
+name: Test and Build
 
-on: push
+on: pull_request
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  build:
+  test-build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Use Node.js
       uses: actions/setup-node@v3
@@ -18,23 +19,11 @@ jobs:
         node-version-file: .nvmrc
         cache: npm
 
-    - name: Install dependencies and test
-      run: |
-        npm ci
-        npm test
+    - name: Install dependencies
+      run: npm ci
 
-    - name: Deploy commit to DigitalOcean Spaces
-      run: aws s3 sync ./demo/dist s3://${{ secrets.SPACES_BUCKET }}/commits/do-vue/${{ github.sha }} --endpoint=https://${{ secrets.SPACES_REGION }}.digitaloceanspaces.com --acl public-read --content-encoding utf8
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ${{ secrets.SPACES_REGION }}
+    - name: Run tests
+      run: npm test
 
-    - name: Leave a comment on commit
-      run: npm run deploy:spaces:comment
-      env:
-        REPO_NAME: ${{ github.repository }}
-        COMMIT_SHA: ${{ github.sha }}
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SPACES_REGION: ${{ secrets.SPACES_REGION }}
-        SPACES_BUCKET: ${{ secrets.SPACES_BUCKET }}
+    - name: Build demo
+      run: npm run demo:build
