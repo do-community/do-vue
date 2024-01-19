@@ -1,5 +1,5 @@
 /*
-Copyright 2022 DigitalOcean
+Copyright 2024 DigitalOcean
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,13 +38,13 @@ const baseHtml = async mode => {
 
     // Support developing a tool for WWW
     if (mode === 'www') {
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/'));
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com'));
         return await res.text();
     }
 
     // Default to a tool for Community tooling
     if (mode === 'community') {
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community/tools/blank'));
+        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community'));
         return await res.text();
     }
 
@@ -52,11 +52,10 @@ const baseHtml = async mode => {
 };
 
 module.exports = async () => {
-    console.log('Fetching Community Tools template from www.digitalocean.com...');
-
     // Determine the mode
     const mode = process.env.BLANK_TEMPLATE === 'true' ? 'blank' :
         (process.env.WWW_TEMPLATE === 'true' ? 'www' : 'community');
+    console.log(`Fetching tool template (${mode})...`);
 
     // Fetch raw template
     let rawHTML = await baseHtml(mode);
@@ -100,33 +99,23 @@ module.exports = async () => {
     });
 
     // Inject charset
-    if (!document.querySelectorAll('meta[charset="utf-8"]') && !document.querySelectorAll('meta[charset="utf8"]')) {
+    if (!document.querySelectorAll('meta[charset="utf-8"], meta[charset="utf8"]')) {
         const charset = document.createElement('meta');
         charset.setAttribute('charset', 'utf-8');
         document.head.insertBefore(charset, document.head.firstChild);
     }
 
-    // Remove nav log in + sign up buttons
     if (mode === 'www' || mode === 'community') {
-        document.querySelectorAll('ul[class*="SecondaryMenu"] li').forEach(node => {
-            if (node.innerHTML.toLowerCase().includes('log in') || node.innerHTML.toLowerCase().includes('sign up')) {
-                node.remove();
-            }
-        });
-    }
-
-    // Remove www content + fix footer wave
-    if (mode === 'www') {
-        document.querySelectorAll('body > div > section').forEach(node => {
-            node.remove();
+        // Remove nav log in + sign up buttons
+        document.querySelectorAll('nav li').forEach(node => {
+            if (node.textContent.toLowerCase().includes('log in')) node.remove();
+            if (node.textContent.toLowerCase().includes('sign up')) node.remove();
         });
 
-        document.querySelector('body > div > div[class*="FooterSeaWave"]').style.backgroundColor = '#fff';
-    }
-
-    // Remove community content
-    if (mode === 'community') {
-        document.querySelectorAll('div[class*="LayoutCommunity"] > div:not([class*="Navigation"])').forEach(node => {
+        // Remove www + community content
+        document.querySelectorAll('div[class^="Layout"] > *').forEach(node => {
+            if (node.querySelector('nav, [class^="Header"], [class*=" Header"]')) return;
+            if (node.querySelector('footer, [class^="Footer"], [class*=" Footer"]')) return;
             node.remove();
         });
     }
@@ -138,7 +127,7 @@ module.exports = async () => {
         document.querySelector('body > .app').appendChild(content);
     }
     if (mode === 'www' || mode === 'community') {
-        document.querySelector('div[class*="Navigation"] > nav').parentElement.insertAdjacentElement('afterend', content);
+        document.querySelector('nav').parentElement.insertAdjacentElement('afterend', content);
     }
 
     // Inject the title block
@@ -148,7 +137,9 @@ module.exports = async () => {
     rawHTML = dom.serialize();
 
     // Inject last fetch comment
-    rawHTML = rawHTML.replace('<head>', `<!-- Last fetch from www.digitalocean.com @ ${(new Date()).toISOString()} -->\n<head>`);
+    if (mode === 'www' || mode === 'community') {
+        rawHTML = rawHTML.replace('<head>', `<!-- Last fetch from www.digitalocean.com${mode === 'community' ? '/community' : ''} @ ${(new Date()).toISOString()} -->\n<head>`);
+    }
 
     // Create target directory
     const baseDir = `${process.cwd()}/build`;
