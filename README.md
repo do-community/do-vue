@@ -6,11 +6,14 @@ Custom Vue templates & resources for DigitalOcean Community tools.
 
 ## Development
 
-To setup the develop environment, you will need to run `npm i` with Node 12+ installed.
-This will install the dependencies to allow you to work the project.
+To setup the develop environment, you will need to having Node.js installed (matching the version specified in
+ `.nvmrc`), and then run `npm ci` to install dependencies (this will respect the lockfile).
 
 We make use of `eslint` to maintain code quality in the JS & Vue files.
 To run this you can use `npm test`.
+
+A demo project is included in the `demo` directory, which helps ensure the Webpack config is working as expected.
+This can be run with `demo:dev` to start a server with hot reloading, or `demo:build` to build the demo project.
 
 ## Usage Example
 
@@ -30,7 +33,7 @@ This directory contains internationalisation data for all the Vue templates in t
 ### [`src/templates`](./src/templates)
 
 This directory contains all the centralised Vue templates we use for the Community tools.
- 
+
 ### [`src/utils`](./src/utils)
 
 This directory contains any shared utility scripts used in this package or the Community tools.
