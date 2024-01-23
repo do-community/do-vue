@@ -6,7 +6,7 @@ Custom Vue templates & resources for DigitalOcean Community tools.
 
 ## Development
 
-To setup the develop environment, you will need to having Node.js installed (matching the version specified in
+To setup the develop environment, you will need to have Node.js installed (matching the version specified in
  `.nvmrc`), and then run `npm ci` to install dependencies (this will respect the lockfile).
 
 We make use of `eslint` to maintain code quality in the JS & Vue files.
