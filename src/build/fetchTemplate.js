@@ -21,6 +21,12 @@ const ensureDir = require('./ensureDir');
 
 const fetch = import('node-fetch');
 
+const wwwSelectors = {
+    content: '[class^="Layout"] > *, [class*=" Layout"] > *',
+    header: 'nav, [class^="Header"], [class*=" Header"]',
+    footer: 'footer, [class^="Footer"], [class*=" Footer"], #footer',
+};
+
 const baseHtml = async mode => {
     // Support a blank template for completely local dev
     if (mode === 'blank') {
@@ -105,17 +111,22 @@ module.exports = async () => {
         document.head.insertBefore(charset, document.head.firstChild);
     }
 
+    let contentAnchor;
     if (mode === 'www' || mode === 'community') {
         // Remove nav log in + sign up buttons
-        document.querySelectorAll('nav li').forEach(node => {
+        document.querySelectorAll('header li').forEach(node => {
             if (node.textContent.toLowerCase().includes('log in')) node.remove();
             if (node.textContent.toLowerCase().includes('sign up')) node.remove();
         });
 
         // Remove www + community content
-        document.querySelectorAll('div[class^="Layout"] > *').forEach(node => {
-            if (node.querySelector('nav, [class^="Header"], [class*=" Header"]')) return;
-            if (node.querySelector('footer, [class^="Footer"], [class*=" Footer"]')) return;
+        document.querySelectorAll(wwwSelectors.content).forEach(node => {
+            if (node.querySelector(wwwSelectors.header)) return;
+            if (node.querySelector(wwwSelectors.footer)) return;
+
+            // If this is the first content node on the page,
+            // we'll inject the content block where it is
+            if (!contentAnchor) contentAnchor = node.previousElementSibling;
             node.remove();
         });
     }
@@ -127,7 +138,7 @@ module.exports = async () => {
         document.querySelector('body > .app').appendChild(content);
     }
     if (mode === 'www' || mode === 'community') {
-        document.querySelector('nav').parentElement.insertAdjacentElement('afterend', content);
+        contentAnchor.insertAdjacentElement('afterend', content);
     }
 
     // Inject the title block
