@@ -19,8 +19,6 @@ const { JSDOM } = jsdom;
 const fs = require('fs');
 const ensureDir = require('./ensureDir');
 
-const fetch = import('node-fetch');
-
 const wwwSelectors = {
     content: '[class^="Layout"] > *, [class*=" Layout"] > *',
     header: 'nav, [class^="Header"], [class*=" Header"]',
@@ -44,13 +42,13 @@ const baseHtml = async mode => {
 
     // Support developing a tool for WWW
     if (mode === 'www') {
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com'));
+        const res = await fetch('https://www.digitalocean.com');
         return await res.text();
     }
 
     // Default to a tool for Community tooling
     if (mode === 'community') {
-        const res = await fetch.then(({ default: run }) => run('https://www.digitalocean.com/community'));
+        const res = await fetch('https://www.digitalocean.com/community');
         return await res.text();
     }
 
